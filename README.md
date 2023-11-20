@@ -7,7 +7,7 @@
 
 cp ./target/demo-batch-0.0.1-SNAPSHOT.jar .
 
-java -jar ./demo-batch-0.0.1-SNAPSHOT.jar 
+java -jar ./demo-batch-0.0.1-SNAPSHOT.jar
 ```
 
 ## CodeDeploy command snippet

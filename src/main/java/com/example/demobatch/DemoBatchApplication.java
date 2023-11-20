@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SpringBootApplication
 public class DemoBatchApplication {
@@ -22,9 +24,13 @@ public class DemoBatchApplication {
 		Logger logger = LoggerFactory.getLogger(DemoBatchApplication.class);
 		logger.info("hello world");
 
+		long now = System.currentTimeMillis();
+		String fileName = "hello-" + new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date(now));
+
 		// hello.txt ファイルを作成
-		// File file = new File(homeDir, "hello.txt");
-		File file = new File("/tmp", "hello.txt");
+		// File file = new File(homedir, fileName + ".txt");
+		File file = new File("/tmp", fileName + ".txt");
+
 		try {
 			file.createNewFile();
 

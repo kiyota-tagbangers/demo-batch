@@ -31,5 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-demo-batch-0.0.1-SNAPSHOT.jar
+demo-batch-*.jar
 demo-batch.zip
