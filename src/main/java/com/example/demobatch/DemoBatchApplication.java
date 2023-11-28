@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,13 +33,17 @@ public class DemoBatchApplication {
 		Path homeDirFile = homeDir.resolve(fileName + ".txt");
 		Path tmpDirFile = Paths.get("/tmp", fileName + ".txt");
 
-		// ファイルを作成
-		Files.createFile(homeDirFile);
-		Files.createFile(tmpDirFile);
-
-		// ファイルに書き込み
-		Files.write(homeDirFile, "hello world".getBytes());
-		Files.write(tmpDirFile, "hello world".getBytes());
+		// ファイルを作成と書き込みを同時に行う
+		Files.write(
+				homeDirFile,
+				String.format("hello world by %s\n", System.getProperty("user.name")).getBytes(),
+				StandardOpenOption.CREATE
+		);
+		Files.write(
+				tmpDirFile,
+				String.format("hello world by %s\n", System.getProperty("user.name")).getBytes(),
+				StandardOpenOption.CREATE
+		);
 	}
 
 }
