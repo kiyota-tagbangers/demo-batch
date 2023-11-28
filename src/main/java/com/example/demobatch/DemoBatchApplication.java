@@ -5,41 +5,40 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @SpringBootApplication
 public class DemoBatchApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		SpringApplication.run(DemoBatchApplication.class, args);
-
-		// 実行環境のホームディレクトリを取得
-		// String homeDir = System.getProperty("user.home");
 
 		// 標準出力をログに残す
 		Logger logger = LoggerFactory.getLogger(DemoBatchApplication.class);
 		logger.info("hello world");
 
-		long now = System.currentTimeMillis();
-		String fileName = "hello-" + new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date(now));
+		// ファイル名を生成
+		String fileName = "hello-" + new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date());
 
-		// hello.txt ファイルを作成
-		// File file = new File(homedir, fileName + ".txt");
-		File file = new File("/tmp", fileName + ".txt");
+		// 実行環境のホームディレクトリを取得
+		Path homeDir = Paths.get(System.getProperty("user.home"));
 
-		try {
-			file.createNewFile();
+		// ファイルオブジェクトを生成
+		Path homeDirFile = homeDir.resolve(fileName + ".txt");
+		Path tmpDirFile = Paths.get("/tmp", fileName + ".txt");
 
-			FileWriter writer = new FileWriter(file);
-			writer.write("hello world\n");
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// ファイルを作成
+		Files.createFile(homeDirFile);
+		Files.createFile(tmpDirFile);
+
+		// ファイルに書き込み
+		Files.write(homeDirFile, "hello world".getBytes());
+		Files.write(tmpDirFile, "hello world".getBytes());
 	}
 
 }
