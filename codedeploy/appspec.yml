@@ -5,6 +5,10 @@ os: linux
 files:
   - source: ./demo-batch-0.0.4.jar
     destination: /var/run/
+#  - source: ./lib
+#    destination: /var/lib
+  - source: ./lib2
+    destination: /var/lib
 hooks:
   # For each deployment lifecycle event, specify multiple "location" entries
   #   if you want to run multiple scripts during that event.

@@ -17,21 +17,15 @@ cp ./target/demo-batch-*jar codedeploy
 ```
 
 ```shell
-aws deploy push \
+output=$(aws deploy push \
   --application-name kiyota-codedeploy-test \
   --description "This is a revision for the application kiyota-codedeploy-test" \
   --s3-location s3://kiyota-codedeploy-test-codedeploy-revision/demo-batch.zip \
-  --source ./codedeploy
+  --source ./codedeploy | tee /dev/tty)
 ```
 
-check `eTag` value
-
-> To deploy with this revision, run:
-aws deploy create-deployment --application-name kiyota-codedeploy-test --s3-location bucket=kiyota-codedeploy-test-codedeploy-revision,key=demo-batch.zip,bundleType=zip,eTag=d53194024e9139ceb27134253a257d56-2 --deployment-group-name <deployment-group-name> --deployment-config-name <deployment-config-name> --description <description>
-
-
 ```shell
-export ETAG_VALUE=d53194024e9139ceb27134253a257d56-2
+export ETAG_VALUE=$(echo "$output" | sed -n 's/.*eTag=\([^ ]*\).*/\1/p')
 
 aws deploy create-deployment \
   --application-name kiyota-codedeploy-test \
