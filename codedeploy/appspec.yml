@@ -3,7 +3,7 @@
 version: 0.0
 os: linux
 files:
-  - source: ./demo-batch-0.0.1-SNAPSHOT.jar
+  - source: ./demo-batch-0.0.4.jar
     destination: /var/run/
 hooks:
   # For each deployment lifecycle event, specify multiple "location" entries
