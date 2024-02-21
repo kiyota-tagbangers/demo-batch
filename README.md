@@ -10,29 +10,51 @@ cp ./target/demo-batch-*.jar .
 # java -jar ./demo-batch-0.0.1-SNAPSHOT.jar
 ```
 
-## CodeDeploy command snippet
+## CodeDeploy command for deploy
 
 ```shell
-cp ./target/demo-batch-*jar codedeploy 
+cp ./target/demo-batch-*jar sampleapp 
+
+cp ./target/demo-batch-*jar sampleapp2 
 ```
+
+### deploy sampleapp directory contents
 
 ```shell
 output=$(aws deploy push \
   --application-name kiyota-codedeploy-test \
-  --description "This is a revision for the application kiyota-codedeploy-test" \
+  --description "This is a revision for the application kiyota-codedeploy-test sampleapp" \
   --s3-location s3://kiyota-codedeploy-test-codedeploy-revision/demo-batch.zip \
-  --source ./codedeploy | tee /dev/tty)
-```
+  --source ./sampleapp | tee /dev/tty)
 
-```shell
 export ETAG_VALUE=$(echo "$output" | sed -n 's/.*eTag=\([^ ]*\).*/\1/p')
 
 aws deploy create-deployment \
   --application-name kiyota-codedeploy-test \
   --s3-location bucket=kiyota-codedeploy-test-codedeploy-revision,key=demo-batch.zip,bundleType=zip,eTag=$ETAG_VALUE \
   --deployment-group-name kiyota-codedeploy-test \
-  --description "hello $(date +'%Y-%m-%d-%H-%M-%S')"
+  --description "for sampleapp $(date +'%Y-%m-%d-%H-%M-%S')"
 ```
+
+### deploy sampleapp2 directory contents
+
+```shell
+output=$(aws deploy push \
+  --application-name kiyota-codedeploy-test \
+  --description "This is a revision for the application kiyota-codedeploy-test sampleapp2" \
+  --s3-location s3://kiyota-codedeploy-test-codedeploy-revision/demo-batch.zip \
+  --source ./sampleapp2 | tee /dev/tty)
+
+export ETAG_VALUE=$(echo "$output" | sed -n 's/.*eTag=\([^ ]*\).*/\1/p')
+
+aws deploy create-deployment \
+  --application-name kiyota-codedeploy-test \
+  --s3-location bucket=kiyota-codedeploy-test-codedeploy-revision,key=demo-batch.zip,bundleType=zip,eTag=$ETAG_VALUE \
+  --deployment-group-name kiyota-codedeploy-test-second \
+  --description "for sampleapp2 $(date +'%Y-%m-%d-%H-%M-%S')"
+```
+
+## CodeDeploy command snippet
 
 ```shell
 $ sudo service codedeploy-agent status

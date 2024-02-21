@@ -1,0 +1,16 @@
+# @see https://docs.aws.amazon.com/ja_jp/codedeploy/latest/userguide/application-revisions-appspec-file.html#add-appspec-file-server
+# @see https://docs.aws.amazon.com/codedeploy/latest/userguide/app-spec-ref.html
+version: 0.0
+os: linux
+files:
+  - source: ./demo-batch-0.0.4.jar
+    destination: /var/run/sampleapp
+  - source: ./lib
+    destination: /var/lib
+# デプロイ対象のサーバーに revision に含まれるファイルがすでにある場合は書き換える
+file_exists_behavior: OVERWRITE
+hooks:
+  ApplicationStart:
+    - location: scripts/application_start.sh
+      timeout: 60
+      runas: root
